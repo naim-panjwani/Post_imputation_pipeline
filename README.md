@@ -8,7 +8,7 @@ You will need the following files, programs, libraries:
 - Will Rayner's strand alignment file for your specific platform (see https://www.well.ox.ac.uk/~wrayner/strand/)
 - The 1000 Genomes reference fasta file
 - R packages: argparse, data.table
-- bgzip, tabix, and vcftools
+- bgzip, tabix, vcftools, and bcftools
 - PLINK (v1.90b6.9 64-bit (4 Mar 2019) used here)
 
 ## Step 1
@@ -28,4 +28,24 @@ For the SNP list to add back, you could simply list out all SNPs in the bim file
 plink --bfile 08-1-underscore_to_dash_id_update --extract 17-2-Omni25_SNPs_to_add_back.txt --make-bed --out 17-SNPs_to_add_back
 ```
 
+## Step 3
+- Align the SNPs to the plus strand
+Since the Illumina SNP names were converted to rsid's, we need to convert them back for strand alignment using Will Rayner's update_build.sh script
+```
+bash 03-align_strand.sh <bPLINK_filename> <rsid_illumina_mapping_filename> <strand_filename> <output_filename>
+```
+Example:
+```
+bash 03-align_strand.sh 17-SNPs_to_add_back 18-SNP_renaming_1-3_and_1-4_merged.txt strand_files_1-4/InfiniumOmni2-5-8v1-4_A1-b37.strand 20-Strand_aligned_1-4
+```
+
+## Step 4
+- Convert to VCF; fix the X,Y,MT and pseudoautosomal X chrom field; and align the reference allele to 1000 Genomes
+```
+bash 04-convert_and_fix_vcf.sh <bPLINK_filename> <output_filename>
+```
+Example:
+```
+bash 04-convert_and_fix_vcf.sh 20-Strand_aligned_1-4 23-SNPs_to_add_back_normalized.vcf.gz
+```
 
