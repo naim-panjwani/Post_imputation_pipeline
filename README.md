@@ -9,6 +9,7 @@ You will need the following files, programs, libraries:
 - The 1000 Genomes reference fasta file
 - R packages: argparse, data.table
 - bgzip, tabix, and vcftools
+- PLINK (v1.90b6.9 64-bit (4 Mar 2019) used here)
 
 ## Step 1
 - Check list of SNPs to add back to ensure that they are not already imputed
