@@ -2,6 +2,10 @@
 # Converts to VCF; fixes the X,Y,MT and pseudoautosomal X chrom field; and align the reference allele to 1000 Genomes
 # Input: a binary PLINK file
 # Output: a left-aligned and 1KG-normalized VCF
+# Dependencies: ensure the 1000 Genomes reference fasta files are present:
+#   human_g1k_v37.fasta
+#   human_g1k_v37.fasta.fai
+#   human_g1k_v37.dict
 # Syntax: bash 04-convert_and_fix_vcf.sh <bPLINK_filename> <output_filename>
 # Example: bash 04-convert_and_fix_vcf.sh 20-Strand_aligned_1-4 23-SNPs_to_add_back_normalized.vcf.gz
 
