@@ -13,6 +13,7 @@ from tqdm import tqdm
 import argparse
 import re
 from datetime import datetime
+import subprocess
 
 ###### Helper functions ######
 def getNumHeaderLines(vcf_filename, num_lines_to_check = 1000):
@@ -115,7 +116,7 @@ def appendToGT(GTlist, DSlist, GPlist):
 
 def writeHeader(infile, outfilename):
     with gzip.open(infile, 'rb') as f_in:
-        with gzip.open(outfilename, 'wb') as f_out:
+        with open(outfilename, 'wb') as f_out:
             nextline = f_in.readline().decode('utf-8')
             while nextline[0:1] == "#":
                 f_out.write(bytes(nextline, 'utf-8'))
@@ -134,7 +135,7 @@ if __name__=='__main__':
     vcf_filename = args.vcf_filename
     chunksize = 100
     #chunksize = int(args.chunksize)
-    outfilename = args.output_filename
+    outfilename = args.output_filename.replace('.gz','').replace('.vcf','')+'.vcf'
     logfilename = outfilename.replace('.gz','').replace('.vcf','')+'.log'
     
     old_stdout = sys.stdout
@@ -192,11 +193,12 @@ if __name__=='__main__':
         vcfchunk['FORMAT'] = formatcol
         vcfchunk.iloc[:, 9:] = gt_df
         #vcfchunk.to_csv(outfilename, sep='\t', mode='a', index=False, header=False, compression='gzip')
-        vcfchunk_str = vcfchunk.to_string(index=False, header=False)
-        vcfchunk_str = re.sub(r"\ +", '\t', vcfchunk_str)
-        vcfchunkb = bytes(vcfchunk_str, 'utf-8')
-        with gzip.open(outfilename, 'a') as f_out:
-            f_out.write(vcfchunkb)
+        vcfchunk.to_csv(outfilename, sep='\t', mode='a', index=False, header=False)
+        #vcfchunk_str = vcfchunk.to_string(index=False, header=False)
+        #vcfchunk_str = re.sub(r"\ +", '\t', vcfchunk_str)
+        #vcfchunkb = bytes(vcfchunk_str, 'utf-8')
+        #with gzip.open(outfilename, 'a') as f_out:
+        #    f_out.write(vcfchunkb)
     
     print(datetime.now().strftime('%c'))
     sys.stdout = old_stdout

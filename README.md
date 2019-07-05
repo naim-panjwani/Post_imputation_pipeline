@@ -80,7 +80,7 @@ python3 05-VCF_Reformatting.py <VCF_filename> <output_filename>
 ```
 Example:
 ```
-python3 Post_imputation_pipeline/05-VCF_Reformating.py 23-SNPs_to_add_back_normalized.vcf.gz 24-SNPs_to_add_back_reformatted.vcf.gz
+python3 Post_imputation_pipeline/05-VCF_Reformating.py 23-SNPs_to_add_back_normalized.vcf.gz 24-SNPs_to_add_back_reformatted.vcf
 ```
 Script help details:
 ```
@@ -96,4 +96,31 @@ positional arguments:
 optional arguments:
   -h, --help       show this help message and exit
 ```
+
+## Step 6
+- Sort the file and compress
+```
+sed 's/^\t//g' <step5_outputfilename> |sort -k1,1V -k2,2n |bgzip -c ><step5_outputfilename>.gz
+tabix -p vcf <step5_outputfilename>.gz
+```
+Example:
+```
+sed 's/^\t//g' 24-SNPs_to_add_back_reformatted.vcf |sort -k1,1V -k2,2n |bgzip -c >24-SNPs_to_add_back_reformatted.vcf.gz
+tabix -p vcf 24-SNPs_to_add_back_reformatted.vcf.gz
+```
+
+## Step 7
+- Merge and sort with the imputed files. If the imputed files are split by chromosome, then an example of how to combine these follows:
+```
+for i in {1..22}; do
+  (tabix -h 16-JME_Round1_and_2_chr${i}_beagle5_imputed.vcf.gz ${i}: ; tabix 24-SNPs_to_add_back_reformatted.vcf.gz ${i}: ) |vcf-sort |bgzip -c >25-JME_Round1_and_2_chr${i}_imputed_all_snps_in.vcf.gz
+done
+i="X"
+(tabix -h 16-JME_Round1_and_2_chr${i}_beagle5_imputed.vcf.gz ${i}: ; tabix 24-SNPs_to_add_back_reformatted.vcf.gz ${i}: ) |vcf-sort |bgzip -c >25-JME_Round1_and_2_chr${i}_imputed_all_snps_in.vcf.gz
+i="Y"
+tabix -h 24-SNPs_to_add_back_reformatted.vcf.gz ${i}: |vcf-sort |bgzip -c >25-JME_Round1_and_2_chr${i}_imputed_all_snps_in.vcf.gz
+i="MT"
+tabix -h 24-SNPs_to_add_back_reformatted.vcf.gz ${i}: |vcf-sort |bgzip -c >25-JME_Round1_and_2_chr${i}_imputed_all_snps_in.vcf.gz
+```
+The 16-JME\_Round1\_and\_2\_chr${i}\_beagle5\_imputed.vcf.gz are the imputed files, and 24-SNPs\_to\_add\_back\_reformatted.vcf.gz is the file generated from step 6
 
