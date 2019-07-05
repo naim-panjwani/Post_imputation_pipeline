@@ -1,5 +1,5 @@
 # Post imputation pipeline
-This pipeline aims to add genotyped SNPs that get thrown out due to their absence from the reference back into the imputed VCFs post-imputation (specifically, post-imputation with BEAGLE v4 or later)
+This pipeline aims to add genotyped SNPs that get thrown out due to their absence from the reference back into the imputed VCFs post-imputation (specifically, post-imputation with BEAGLE v4 or later). BEAGLE version 5 was used here.
 
 ## Step 0
 You will need the following files, programs, libraries:
