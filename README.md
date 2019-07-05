@@ -20,7 +20,7 @@ Example:
 ```
 Rscript Post_imputation_pipeline/01-cleanup_SNPs_to_add_back.R 17-Omni25_SNPs_to_add_back.txt 17-1-imputed_SNP_list.txt 17-2-Omni25_SNPs_to_add_back.txt
 ```
-For the SNP list to add back, you could simply list out all SNPs in the bim file prior to the conform-gt step
+For the SNP list to add back, you could simply list out all SNPs in the bim file prior to the conform-gt step.  
 You may invoke help on the script via the -h argument:
 ```
 Rscript 01-cleanup_SNPs_to_add_back.R -h
