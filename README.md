@@ -44,8 +44,13 @@ optional arguments:
 ## Step 2
 - Extract the SNPs using PLINK
 ```
+plink --bfile <bplink_filename> --extract <step1_snp_list_output> --make-bed --out <output_filename>
+```
+Example:
+```
 plink --bfile 08-1-underscore_to_dash_id_update --extract 17-2-Omni25_SNPs_to_add_back.txt --make-bed --out 17-SNPs_to_add_back
 ```
+
 
 ## Step 3
 - Align the SNPs to the plus strand
