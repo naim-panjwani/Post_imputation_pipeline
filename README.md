@@ -71,7 +71,7 @@ bash 04-convert_and_fix_vcf.sh 20-Strand_aligned_1-4 23-SNPs_to_add_back_normali
 ## Step 5
 - Format the VCF to match the format of BEAGLE (version 5) output VCF
 ```
-python3 05-VCF_Reformatting.py <VCF_filename> <chunksize> <output_filename>
+python3 05-VCF_Reformatting.py <VCF_filename> <output_filename>
 ```
 Example:
 ```
