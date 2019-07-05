@@ -21,6 +21,25 @@ Example:
 Rscript Post_imputation_pipeline/01-cleanup_SNPs_to_add_back.R 17-Omni25_SNPs_to_add_back.txt 17-1-imputed_SNP_list.txt 17-2-Omni25_SNPs_to_add_back.txt
 ```
 For the SNP list to add back, you could simply list out all SNPs in the bim file prior to the conform-gt step
+You may invoke help on the script via the -h argument:
+```
+Rscript 01-cleanup_SNPs_to_add_back.R -h
+usage: 01-cleanup_SNPs_to_add_back.R [--] [--help] [--opts OPTS] SNP_list_to_add_back_filename imputed_SNP_list_filename output_filename
+
+Cleanup tool to check whether the SNPs that we want to add back are SNPs that are not already present in the imputed files
+
+positional arguments:
+  SNP_list_to_add_back_filename			Text file with the list of SNPs we would like to add back
+  imputed_SNP_list_filename			A one-column text file of all SNP ID's in the imputed files
+  output_filename			Desired output filename
+
+flags:
+  -h, --help			show this help message and exit
+
+optional arguments:
+  -x, --opts OPTS			RDS file containing argument values
+```
+
 
 ## Step 2
 - Extract the SNPs using PLINK
@@ -48,4 +67,31 @@ Example:
 ```
 bash 04-convert_and_fix_vcf.sh 20-Strand_aligned_1-4 23-SNPs_to_add_back_normalized.vcf.gz
 ```
+
+## Step 5
+- Format the VCF to match the format of BEAGLE (version 5) output VCF
+```
+python3 05-VCF_Reformatting.py <VCF_filename> <chunksize> <output_filename>
+```
+Example:
+```
+python3 Post_imputation_pipeline/05-VCF_Reformating.py 23-SNPs_to_add_back_normalized.vcf.gz 10000 24-SNPs_to_add_back_reformatted.vcf.gz
+```
+Script help details:
+```
+python3 05-VCF_Reformating.py -h
+usage: 05-VCF_Reformating.py [-h] vcf_filename chunksize output_filename
+
+Tool to format a raw VCF to match the format of BEAGLE (v5) output VCF
+
+positional arguments:
+  vcf_filename     The VCF filename that needs reformatting
+  chunksize        Size this number according to available RAM; recommended
+                   value is 1000 rows
+  output_filename  Output filename
+
+optional arguments:
+  -h, --help       show this help message and exit
+```
+
 

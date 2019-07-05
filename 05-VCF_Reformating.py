@@ -10,6 +10,7 @@ import numpy as np
 import gzip
 import sys
 from tqdm import tqdm
+import argparse
 
 ###### Helper functions ######
 def getNumHeaderLines(vcf_filename, num_lines_to_check = 1000):
@@ -122,16 +123,28 @@ def writeHeader(infile, outfilename):
 ##############################
 ## MAIN
 ##############################
-numHeaderLines = getNumHeaderLines('23-SNPs_to_add_back_normalized.vcf.gz')
-vcfchunks = pd.read_csv("23-SNPs_to_add_back_normalized.vcf.gz", compression='gzip', sep='\t', skiprows=numHeaderLines, header=0, chunksize=1000)
-#vcfchunk = pd.read_csv("23-SNPs_to_add_back_normalized_chunk.vcf.gz", compression='gzip', sep='\t', skiprows=numHeaderLines, header=0)
-outfilename = '24-SNPs_to_add_back_reformatted.vcf.gz'
+parser = argparse.ArgumentParser(description="Tool to format a raw VCF to match the format of BEAGLE (v5) output VCF")
+parser.add_argument('vcf_filename', help='The VCF filename that needs reformatting')
+parser.add_argument('chunksize', help='Size this number according to available RAM; recommended value is 1000 rows')
+parser.add_argument('output_filename', help='Output filename')
+args = parser.parse_args()
+vcf_filename = args.vcf_filename
+chunksize = int(args.chunksize)
+outfilename = args.output_filename
 
-writeHeader('23-SNPs_to_add_back_normalized.vcf.gz', outfilename)
+print('Checking number of VCF header lines')
+numHeaderLines = getNumHeaderLines(vcf_filename)
+print('Reading VCF in chunks of ' + str(chunksize) + ' lines')
+vcfchunks = pd.read_csv(vcf_filename, compression='gzip', sep='\t', skiprows=numHeaderLines, header=0, chunksize=chunksize)
+#vcfchunk = pd.read_csv("23-SNPs_to_add_back_normalized_chunk.vcf.gz", compression='gzip', sep='\t', skiprows=numHeaderLines, header=0)
+
+writeHeader(vcf_filename, outfilename)
 for vcfchunk in vcfchunks:
+    filtercol = list(vcfchunk['FILTER'])
     infocol = list(vcfchunk['INFO'])
     formatcol = list(vcfchunk['FORMAT'])
     gt_df = vcfchunk.iloc[:, 9:]
+    filtercol = [x.replace('.', 'PASS') for x in filtercol]
     formatcol = [x.replace('GT','GT:DS:GP') for x in formatcol]
     for row in np.arange(vcfchunk.shape[0]):
         if vcfchunk.iloc[row,3] == '.':
