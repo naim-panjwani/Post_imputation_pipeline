@@ -128,5 +128,5 @@ i="MT"
 tabix -h 24-SNPs_to_add_back_reformatted.vcf.gz ${i}: |vcf-sort |bgzip -c >25-JME_Round1_and_2_chr${i}_imputed_all_snps_in.vcf.gz
 25-JME_Round1_and_2_chr${i}_imputed_all_snps_in.vcf.gz
 ```
-The 16-JME\_Round1\_and\_2\_chr${i}\_beagle5\_imputed.vcf.gz are the imputed files, and 24\-SNPs\_to\_add\_back\_reformatted.vcf.gz is the file generated from step 6
+The 16-JME\_Round1\_and\_2\_chr${i}\_beagle5\_imputed.vcf.gz are the imputed files, and 24-SNPs\_to\_add\_back\_reformatted.vcf.gz is the file generated from step 6
 
