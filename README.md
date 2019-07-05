@@ -54,7 +54,7 @@ plink --bfile 08-1-underscore_to_dash_id_update --extract 17-2-Omni25_SNPs_to_ad
 
 ## Step 3
 - Align the SNPs to the plus strand
-Since the Illumina SNP names were converted to rsid's, we need to convert them back for strand alignment using Will Rayner's update_build.sh script
+Since the Illumina SNP names were converted to rsid's, we need to convert them back for strand alignment using Will Rayner's update\_build.sh script
 ```
 bash 03-align_strand.sh <bPLINK_filename> <rsid_illumina_mapping_filename> <strand_filename> <output_filename>
 ```
@@ -116,13 +116,17 @@ if [ -e 24-SNPs_to_add_back_reformatted.vcf.gz ]; then rm 24-SNPs_to_add_back_re
 ```
 for i in {1..22}; do
   (tabix -h 16-JME_Round1_and_2_chr${i}_beagle5_imputed.vcf.gz ${i}: ; tabix 24-SNPs_to_add_back_reformatted.vcf.gz ${i}: ) |vcf-sort |bgzip -c >25-JME_Round1_and_2_chr${i}_imputed_all_snps_in.vcf.gz
+  tabix -p vcf 25-JME_Round1_and_2_chr${i}_imputed_all_snps_in.vcf.gz
 done
 i="X"
 (tabix -h 16-JME_Round1_and_2_chr${i}_beagle5_imputed.vcf.gz ${i}: ; tabix 24-SNPs_to_add_back_reformatted.vcf.gz ${i}: ) |vcf-sort |bgzip -c >25-JME_Round1_and_2_chr${i}_imputed_all_snps_in.vcf.gz
+25-JME_Round1_and_2_chr${i}_imputed_all_snps_in.vcf.gz
 i="Y"
 tabix -h 24-SNPs_to_add_back_reformatted.vcf.gz ${i}: |vcf-sort |bgzip -c >25-JME_Round1_and_2_chr${i}_imputed_all_snps_in.vcf.gz
+25-JME_Round1_and_2_chr${i}_imputed_all_snps_in.vcf.gz
 i="MT"
 tabix -h 24-SNPs_to_add_back_reformatted.vcf.gz ${i}: |vcf-sort |bgzip -c >25-JME_Round1_and_2_chr${i}_imputed_all_snps_in.vcf.gz
+25-JME_Round1_and_2_chr${i}_imputed_all_snps_in.vcf.gz
 ```
 The 16-JME\_Round1\_and\_2\_chr${i}\_beagle5\_imputed.vcf.gz are the imputed files, and 24-SNPs\_to\_add\_back\_reformatted.vcf.gz is the file generated from step 6
 
