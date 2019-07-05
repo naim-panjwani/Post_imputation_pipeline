@@ -75,23 +75,20 @@ python3 05-VCF_Reformatting.py <VCF_filename> <chunksize> <output_filename>
 ```
 Example:
 ```
-python3 Post_imputation_pipeline/05-VCF_Reformating.py 23-SNPs_to_add_back_normalized.vcf.gz 10000 24-SNPs_to_add_back_reformatted.vcf.gz
+python3 Post_imputation_pipeline/05-VCF_Reformating.py 23-SNPs_to_add_back_normalized.vcf.gz 24-SNPs_to_add_back_reformatted.vcf.gz
 ```
 Script help details:
 ```
 python3 05-VCF_Reformating.py -h
-usage: 05-VCF_Reformating.py [-h] vcf_filename chunksize output_filename
+usage: 05-VCF_Reformating.py [-h] vcf_filename output_filename
 
 Tool to format a raw VCF to match the format of BEAGLE (v5) output VCF
 
 positional arguments:
   vcf_filename     The VCF filename that needs reformatting
-  chunksize        Size this number according to available RAM; recommended
-                   value is 1000 rows
   output_filename  Output filename
 
 optional arguments:
   -h, --help       show this help message and exit
 ```
-
 
