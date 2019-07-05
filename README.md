@@ -108,7 +108,7 @@ Example:
 ```
 sed 's/^\t//g' 24-SNPs_to_add_back_reformatted.vcf |sort -k1,1V -k2,2n |bgzip -c >24-SNPs_to_add_back_reformatted.vcf.gz
 tabix -p vcf 24-SNPs_to_add_back_reformatted.vcf.gz
-if [ -e 24-SNPs_to_add_back_reformatted.vcf.gz ]; then rm 24-SNPs_to_add_back_reformatted.vcf; fi
+if [ -e 24-SNPs_to_add_back_reformatted.vcf.gz.tbi ]; then rm 24-SNPs_to_add_back_reformatted.vcf; fi
 ```
 
 ## Step 7
