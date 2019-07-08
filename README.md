@@ -100,13 +100,13 @@ optional arguments:
 ## Step 6
 - Fix, sort and compress
 ```
-sed 's/^\t//g' <step5_outputfilename> |sort -k1,1V -k2,2n |bgzip -c ><step5_outputfilename>.gz
+sed 's/^\t//g' <step5_outputfilename> |vcf-sort |bgzip -c > <step5_outputfilename>.gz
 tabix -p vcf <step5_outputfilename>.gz
 if [ -e <step5_outputfilename>.gz ]; then rm <step5_outputfilename>; fi
 ```
 Example:
 ```
-sed 's/^\t//g' 24-SNPs_to_add_back_reformatted.vcf |sort -k1,1V -k2,2n |bgzip -c >24-SNPs_to_add_back_reformatted.vcf.gz
+sed 's/^\t//g' 24-SNPs_to_add_back_reformatted.vcf |vcf-sort |bgzip -c >24-SNPs_to_add_back_reformatted.vcf.gz
 tabix -p vcf 24-SNPs_to_add_back_reformatted.vcf.gz
 if [ -e 24-SNPs_to_add_back_reformatted.vcf.gz.tbi ]; then rm 24-SNPs_to_add_back_reformatted.vcf; fi
 ```
