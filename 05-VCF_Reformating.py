@@ -172,7 +172,13 @@ if __name__=='__main__':
                 sys.exit("Missing REF alleles detected! Exiting")
             if vcfchunk.iloc[row,4] == '.':
                 infocol[row] = 'DR2=1.00;AF=0'
-                gt_df.iloc[row,:] = [str(x) + ':0:1,0,0' for x in gt_df.iloc[row,:]]
+                #gt_df.iloc[row,:] = [str(x) + ':0:1,0,0' for x in gt_df.iloc[row,:]]
+                GTlist = list(gt_df.iloc[row,:])
+                DSlist = []
+                GPlist = []
+                DSlist.append(getDosage(GTlist, allele = 1))
+                GPlist.append(getGP(GTlist, allele = 1))
+                gt_df.iloc[row,:] = appendToGT(GTlist, DSlist, GPlist)
                 continue
             GTlist = list(gt_df.iloc[row,:])
             alt_alleles = vcfchunk.iloc[row,4].split(',')
@@ -192,7 +198,7 @@ if __name__=='__main__':
         vcfchunk['INFO'] = infocol
         vcfchunk['FORMAT'] = formatcol
         vcfchunk.iloc[:, 9:] = gt_df
-        #vcfchunk.to_csv(outfilename, sep='\t', mode='a', index=False, header=False, compression='gzip')
+        #vcfchunk.to_csv(outfilename, sep='\t', mode='a', index=False, header=False, compression='gzip') # this does not work in CentOS, but works locally on MacOS...
         vcfchunk.to_csv(outfilename, sep='\t', mode='a', index=False, header=False)
         #vcfchunk_str = vcfchunk.to_string(index=False, header=False)
         #vcfchunk_str = re.sub(r"\ +", '\t', vcfchunk_str)
